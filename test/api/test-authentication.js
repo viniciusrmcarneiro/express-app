@@ -33,10 +33,13 @@ describe('API - authentication', function(){
 		req.body.username = 'user@user.com';
 		req.body.password = '123';
 
-		target(req, res);
+		return target(req, res)
+			.then( () => {
+				expect(res.status.calledOnce).to.be.true;
+				console.log(res.status.getCall(0).args)
+				expect(res.status.calledWithExactly(200)).to.be.true;
+			});
 
-		expect(res.status.calledOnce).to.be.true;
-		expect(res.status.calledWithExactly(200)).to.be.true;
 	});
 
 });
