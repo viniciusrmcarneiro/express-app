@@ -1,0 +1,27 @@
+{
+  "name": "express-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/**/test-*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viniciusrmcarneiro/express-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/viniciusrmcarneiro/express-app/issues"
+  },
+  "homepage": "https://github.com/viniciusrmcarneiro/express-app#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2",
+    "sinon": "^1.17.6"
+  }
+}
