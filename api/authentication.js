@@ -1,7 +1,6 @@
 const userRepo = require('../repo/user');
 
 function authentication(req, res){
-	console.log(req.body)
 	if (!req.body.username || !req.body.password){
 		res.status(400);
 		return;

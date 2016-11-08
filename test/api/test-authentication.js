@@ -89,6 +89,29 @@ describe('API - authentication', function(){
 			});
 	});
 
+	it("should return 500 if the userRepo fails and log the error", function(){
+		req.body.username = 'user@user.com';
+		req.body.password = '123';
+
+		sandbox.stub(userRepo, 'getByUsername', () => {
+			return Promise.reject(new Error('somthing went wrong.'));
+		});
+
+		sandbox.stub(console, 'error', () => {});
+
+		return target(req, res)
+			.then( () => {
+				expect(userRepo.getByUsername.calledOnce).to.be.true;
+				expect(userRepo.getByUsername.calledWithExactly('user@user.com')).to.be.true;
+
+				expect(res.status.calledOnce).to.be.true;
+				expect(res.status.calledWithExactly(500)).to.be.true;
+
+				expect(console.error.calledOnce).to.be.true;
+				expect(console.error.calledWithExactly(new Error('somthing went wrong.'))).to.be.true;
+			});
+	});
+
 });
 
 
