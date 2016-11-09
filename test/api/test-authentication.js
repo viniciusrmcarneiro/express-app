@@ -16,6 +16,7 @@ describe('API - authentication', function(){
 			body: {},
 		};
 		sandbox.spy(res, 'status');
+		sandbox.spy(res, 'send');
 	});
 
 	afterEach(function(){
@@ -27,6 +28,7 @@ describe('API - authentication', function(){
 
 		expect(res.status.calledOnce).to.be.true;
 		expect(res.status.calledWithExactly(400)).to.be.true;
+		expect(res.send.calledOnce).to.be.true;
 	});
 
 	it("should return 200 username and password are provided", function(){
@@ -47,6 +49,7 @@ describe('API - authentication', function(){
 
 				expect(res.status.calledOnce).to.be.true;
 				expect(res.status.calledWithExactly(200)).to.be.true;
+				expect(res.send.calledOnce).to.be.true;
 			});
 	});
 
@@ -65,6 +68,7 @@ describe('API - authentication', function(){
 
 				expect(res.status.calledOnce).to.be.true;
 				expect(res.status.calledWithExactly(404)).to.be.true;
+				expect(res.send.calledOnce).to.be.true;
 			});
 	});
 
@@ -86,6 +90,7 @@ describe('API - authentication', function(){
 
 				expect(res.status.calledOnce).to.be.true;
 				expect(res.status.calledWithExactly(401)).to.be.true;
+				expect(res.send.calledOnce).to.be.true;
 			});
 	});
 
@@ -109,6 +114,7 @@ describe('API - authentication', function(){
 
 				expect(console.error.calledOnce).to.be.true;
 				expect(console.error.calledWithExactly(new Error('somthing went wrong.'))).to.be.true;
+				expect(res.send.calledOnce).to.be.true;
 			});
 	});
 

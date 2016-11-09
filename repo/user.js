@@ -4,10 +4,18 @@ const fileName = path.join(__dirname,'./users.json');
 
 function getByUsername(username) {
 	return new Promise( resolve => {
+
 		const rawUsers = fs.readFileSync(fileName).toString();
 		const users = JSON.parse(rawUsers);
-		console.log({users})
-		resolve({username, password: '1234'});
+
+		for (var i = users.length - 1; i >= 0; i--) {
+			if (users[i].username === username){
+				resolve(users[i]);
+				return;
+			}
+		}
+
+		resolve(null);
 	});
 };
 
