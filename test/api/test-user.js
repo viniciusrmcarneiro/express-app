@@ -44,6 +44,25 @@ describe('API - USER', function(){
 			expect(res.send.calledWithExactly('username must be different from password.')).to.be.true;
 			expect(res.send.calledOnce).to.be.true;
 		});
+
+		it("should return 409 if username has already been taken", function(){
+			req.body.username = 'test';
+			req.body.password = 'password-123';
+
+			sandbox.stub(userRepo, 'getByUsername', () => Promise.resolve({
+				username: req.body.username,
+				password: req.body.password,
+			}));
+
+			target.create(req, res);
+
+			expect(res.status.calledOnce).to.be.true;
+			expect(res.status.calledWithExactly(409)).to.be.true;
+
+			expect(res.send.calledWithExactly('username is alredy taken.')).to.be.true;
+			expect(res.send.calledOnce).to.be.true;
+		});
+
 	});
 
 
