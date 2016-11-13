@@ -54,13 +54,15 @@ describe('API - USER', function(){
 				password: req.body.password,
 			}));
 
-			target.create(req, res);
+			return target.create(req, res)
+				.then(() => {
+					expect(res.status.calledOnce).to.be.true;
+					expect(res.status.calledWithExactly(409)).to.be.true;
 
-			expect(res.status.calledOnce).to.be.true;
-			expect(res.status.calledWithExactly(409)).to.be.true;
+					expect(res.send.calledWithExactly('username is alredy taken.')).to.be.true;
+					expect(res.send.calledOnce).to.be.true;
+				});
 
-			expect(res.send.calledWithExactly('username is alredy taken.')).to.be.true;
-			expect(res.send.calledOnce).to.be.true;
 		});
 
 	});
