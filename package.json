@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/**/test-*.js",
-    "test-http": "curl -H \"Content-Type: application/json\" -X POST -d '{\"username\":\"xyz\",\"password\":\"xyz\"}' http://localhost:3000/authentication"
+    "acceptance-test": "mocha test-acceptance/test-*.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "chakram": "^1.5.0",
     "mocha": "^3.1.2",
     "sinon": "^1.17.6"
   }
