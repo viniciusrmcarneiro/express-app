@@ -26,15 +26,20 @@ function create(req, res){
 		return;
 	}
 
-	return userRepo.getByUsername(username)
-		.then( user => {
-			if (user){
-				res.status(409);
-				res.send('username is alredy taken.');
-				return;
-			}
+	return userRepo.create(username, password)
+		.then( newUser => {
+			res.status(200);
+			res.send('ok');
 		})
 		.catch( ex => {
+			if (ex.message == 'User name has already been taken'){
+				res.status(409);
+				res.send(ex.message);
+				return;
+			}
+
+			console.error(ex.stack);
+
 			res.status(500);
 			res.send(ex.message);
 		});

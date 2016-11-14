@@ -1,5 +1,3 @@
-[
-	{"username": "user1@app.com", "password": "123"},
-	{"username": "user2@app.com", "password": "321"},
-	{"username": "xyz", "password": "123"}
-]
+{
+	"1": {"id":"1", "password": "123", "username": "my-username"}
+}

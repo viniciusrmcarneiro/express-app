@@ -2,14 +2,25 @@ const chakram = require('chakram');
 const expect = chakram.expect;
 
 describe("USER API", function() {
-    it("should return 409 if the users already exists", function () {
-    	const body = {
-    		username: 'xyz',
-    		password: '123',
-    	}
-        return chakram.post("http://localhost:3000/user", body)
-        	.then( response => {
-        		expect(response).to.have.status(409);
-        	})
+    const userInfo = {
+        username: `username-${new Date().toISOString()}`,
+        password: `password-${new Date().toISOString()}`,
+    };
+
+    it("should creatae an user", function () {
+        return chakram.post("http://localhost:3000/user", userInfo)
+            .then( response => {
+                expect(response).to.have.status(200);
+            });
+    });
+
+    it("should authenticate the user", function () {
+        return chakram.post("http://localhost:3000/authentication", { 
+            username: userInfo.username,
+            password: userInfo.password,
+        })
+            .then( response => {
+                expect(response).to.have.status(200);
+            });
     });
 });
