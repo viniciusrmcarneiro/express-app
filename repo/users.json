@@ -1,3 +1,7 @@
 {
-	"1": {"id":"1", "password": "123", "username": "my-username"}
+    "1": {
+        "id": "1",
+        "password": "123",
+        "username": "my-username"
+    }
 }

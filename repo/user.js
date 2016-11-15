@@ -1,17 +1,30 @@
 const fs = require('fs');
 const path = require('path');
-const fileName = path.join(__dirname,'./users.json');
 const shortid = require('shortid');
+
+
+const fileName = path.join(__dirname,'./users.json');
+function getUsers(){
+	const rawUsers = fs.readFileSync(fileName).toString();
+	const users = JSON.parse(rawUsers);
+	return users;
+}
+
+function storeUsers(users){
+	fs.writeFileSync(fileName, JSON.stringify(users, null, 4));
+}
 
 function getByUsername(username) {
 	return new Promise( resolve => {
 
-		const rawUsers = fs.readFileSync(fileName).toString();
-		const users = JSON.parse(rawUsers);
+		const users =  getUsers();
+		const userIds = Object.keys(users);
 
-		for (var i = users.length - 1; i >= 0; i--) {
-			if (users[i].username === username){
-				resolve(users[i]);
+		for (var i = userIds.length - 1; i >= 0; i--) {
+			var userId = userIds[i];
+
+			if (users[userId].username === username){
+				resolve(users[userId]);
 				return;
 			}
 		}
@@ -21,43 +34,50 @@ function getByUsername(username) {
 };
 
 function create(username, password){
+
 	return getByUsername(username)
 		.then((user) => {
 			if (user){
 				throw new Error('User name has already been taken');
 			}
 
-			const rawUsers = fs.readFileSync(fileName).toString();
-			const users = JSON.parse(rawUsers);
+			const users =  getUsers();
+			const userId = shortid.generate();
 
-			users.push({username, password});
+			users[userId] = {id: userId, username, password};
 
-			fs.writeFileSync(fileName, JSON.stringify(users));
+			storeUsers(users);
 
-			return users[users.length-1];
+			return users[userId];
 		});
 }
 
-function update(username, userData){
-	return getByUsername(username)
-		.then((user) => {
-			if (!user){
-				throw new Error('Username does not exists');
-			}
+function update(userId, userData){
 
-			const rawUsers = fs.readFileSync(fileName).toString();
-			const users = JSON.parse(rawUsers);
-			const id = shortid.generate();
+	return new Promise((resolve) => {
+		const users = getUsers();
+		const user = users[userId];
 
-			users.push({id, username, password});
+		if (!user){
+			throw new Error('userId does not exists');
+		}
 
-			fs.writeFileSync(fileName, JSON.stringify(users));
+		const newUser = {
+			id: user.id,
+			username: userData.username,
+			password: userData.password,
+		};
 
-			return users[users.length-1];
-		});
+		users[user.id] = newUser;
+
+		storeUsers(users);
+
+		resolve(newUser);
+	});
 }
 
 module.exports = {
 	getByUsername,
 	create,
+	update,
 };
