@@ -6,6 +6,12 @@ describe("USER API", function() {
         username: `username-${new Date().toISOString()}`,
         password: `password-${new Date().toISOString()}`,
     };
+
+    const userAdminInfo = {
+        "password": "123",
+        "username": "my-username",
+    };
+
     var userId;
 
     it("should create an user", function () {
@@ -37,15 +43,50 @@ describe("USER API", function() {
             });
     });
 
-    it("should get all users", function () {
-        return chakram.get(`http://localhost:3000/users`)
-            .then( response => {
-                expect(response).to.have.status(200);
-                expect(response.body)
-                    .to.have.deep.property('0')
-                    .to.have.keys('id','username');
+    it("get all users should return 403 if the is not an admin", function () {
+        return chakram.post("http://localhost:3000/authentication", { 
+            username: userInfo.username,
+            password: userInfo.password,
+        })
+            .then( authenticationResponse => {
+                expect(authenticationResponse).to.have.status(200);
+                const authenticationToken = authenticationResponse.body;
+        
+                return chakram.get(`http://localhost:3000/users`, {
+                    headers: {
+                        'authentication-token': authenticationToken,
+                    }
+                })
+                .then( response => {
+                    expect(response).to.have.status(403);
+                })
 
             });
+
+    });
+    
+    it("should get all users", function () {
+        return chakram.post("http://localhost:3000/authentication", { 
+            username: userAdminInfo.username,
+            password: userAdminInfo.password,
+        })
+            .then( authenticationResponse => {
+                const authenticationToken = authenticationResponse.body;
+        
+                return chakram.get(`http://localhost:3000/users`, {
+                    headers: {
+                        'authentication-token': authenticationToken,
+                    }
+                })
+                    .then( response => {
+                        expect(response).to.have.status(200);
+                        expect(response.body)
+                            .to.have.deep.property('0')
+                            .to.have.keys('id','username');
+
+                    });
+            });
+
     });
 
 });

@@ -1,4 +1,5 @@
 const userRepo = require('../repo/user');
+const jwt = require('jsonwebtoken');
 
 function authentication(req, res){
 	if (!req.body.username || !req.body.password){
@@ -22,8 +23,13 @@ function authentication(req, res){
 					return;
 				}
 
+				const token = jwt.sign({
+					id : user.id,
+					isAdmin : user.isAdmin,
+				}, 'just a simple screct phrase');
+
 				res.status(200);
-				res.send('ok');
+				res.send(token);
 
 			})
 			.catch( ex => {
