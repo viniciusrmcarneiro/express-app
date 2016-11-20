@@ -1,9 +1,14 @@
 const userRepo = require('../repo/user');
 
-function get(req, res){
+function _delete(req, res){
 }
 
-function _delete(req, res){
+function all(req, res){
+	return userRepo.all()
+		.then( users => {
+			res.status(200);
+			res.send(users);
+		});
 }
 
 function update(req, res){
@@ -64,7 +69,7 @@ function create(req, res){
 }
 
 module.exports = {
-	get: get,
+	all,
 	delete: _delete,
 	update,
 	create,

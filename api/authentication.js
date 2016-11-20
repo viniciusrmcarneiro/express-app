@@ -8,7 +8,7 @@ function authentication(req, res){
 	}
 
 	return userRepo
-		.getByUsername(req.body.username)
+		.byUsername(req.body.username)
 			.then( user => {
 				if (!user){
 					res.status(404);

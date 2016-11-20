@@ -37,4 +37,15 @@ describe("USER API", function() {
             });
     });
 
+    it("should get all users", function () {
+        return chakram.get(`http://localhost:3000/users`)
+            .then( response => {
+                expect(response).to.have.status(200);
+                expect(response.body)
+                    .to.have.deep.property('0')
+                    .to.have.keys('id','username');
+
+            });
+    });
+
 });

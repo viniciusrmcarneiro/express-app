@@ -2,6 +2,62 @@
     "1": {
         "id": "1",
         "password": "123",
-        "username": "my-username"
+        "username": "my-username",
+        "isAdmin": true
+    },
+    "Sy9dvukGl": {
+        "id": "Sy9dvukGl",
+        "username": "x-username-2016-11-20T19:20:17.783Z",
+        "password": "x-password-2016-11-20T19:20:17.783Z"
+    },
+    "rJ4ht_yfx": {
+        "id": "rJ4ht_yfx",
+        "username": "x-username-2016-11-20T19:29:47.637Z",
+        "password": "x-password-2016-11-20T19:29:47.637Z"
+    },
+    "Syi4juJzx": {
+        "id": "Syi4juJzx",
+        "username": "x-username-2016-11-20T19:36:18.771Z",
+        "password": "x-password-2016-11-20T19:36:18.771Z"
+    },
+    "HygLi_kMx": {
+        "id": "HygLi_kMx",
+        "username": "x-username-2016-11-20T19:36:40.255Z",
+        "password": "x-password-2016-11-20T19:36:40.255Z"
+    },
+    "HyHisOkzl": {
+        "id": "HyHisOkzl",
+        "username": "x-username-2016-11-20T19:38:04.542Z",
+        "password": "x-password-2016-11-20T19:38:04.542Z"
+    },
+    "ryp3oukzg": {
+        "id": "ryp3oukzg",
+        "username": "x-username-2016-11-20T19:38:28.813Z",
+        "password": "x-password-2016-11-20T19:38:28.813Z"
+    },
+    "S1Kz2u1fe": {
+        "id": "S1Kz2u1fe",
+        "username": "username-2016-11-20T19:40:01.004Z",
+        "password": "password-2016-11-20T19:40:01.005Z"
+    },
+    "rJZS2dyGe": {
+        "id": "rJZS2dyGe",
+        "username": "x-username-2016-11-20T19:40:41.310Z",
+        "password": "x-password-2016-11-20T19:40:41.310Z"
+    },
+    "S1O83OyMl": {
+        "id": "S1O83OyMl",
+        "username": "x-username-2016-11-20T19:41:04.140Z",
+        "password": "x-password-2016-11-20T19:41:04.140Z"
+    },
+    "r10D2_yze": {
+        "id": "r10D2_yze",
+        "username": "x-username-2016-11-20T19:41:25.556Z",
+        "password": "x-password-2016-11-20T19:41:25.556Z"
+    },
+    "Sk5Onukfe": {
+        "id": "Sk5Onukfe",
+        "username": "x-username-2016-11-20T19:41:37.567Z",
+        "password": "x-password-2016-11-20T19:41:37.567Z"
     }
 }

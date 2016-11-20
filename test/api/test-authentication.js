@@ -35,7 +35,7 @@ describe('API - authentication', function(){
 		req.body.username = 'user@user.com';
 		req.body.password = '123';
 
-		sandbox.stub(userRepo, 'getByUsername', () => {
+		sandbox.stub(userRepo, 'byUsername', () => {
 			return Promise.resolve({
 				username: 'user@user.com',
 				password: '123',
@@ -44,8 +44,8 @@ describe('API - authentication', function(){
 
 		return target(req, res)
 			.then( () => {
-				expect(userRepo.getByUsername.calledOnce).to.be.true;
-				expect(userRepo.getByUsername.calledWithExactly('user@user.com')).to.be.true;
+				expect(userRepo.byUsername.calledOnce).to.be.true;
+				expect(userRepo.byUsername.calledWithExactly('user@user.com')).to.be.true;
 
 				expect(res.status.calledOnce).to.be.true;
 				expect(res.status.calledWithExactly(200)).to.be.true;
@@ -57,14 +57,14 @@ describe('API - authentication', function(){
 		req.body.username = 'user@user.com';
 		req.body.password = '123';
 
-		sandbox.stub(userRepo, 'getByUsername', () => {
+		sandbox.stub(userRepo, 'byUsername', () => {
 			return Promise.resolve(null);
 		});
 
 		return target(req, res)
 			.then( () => {
-				expect(userRepo.getByUsername.calledOnce).to.be.true;
-				expect(userRepo.getByUsername.calledWithExactly('user@user.com')).to.be.true;
+				expect(userRepo.byUsername.calledOnce).to.be.true;
+				expect(userRepo.byUsername.calledWithExactly('user@user.com')).to.be.true;
 
 				expect(res.status.calledOnce).to.be.true;
 				expect(res.status.calledWithExactly(404)).to.be.true;
@@ -76,7 +76,7 @@ describe('API - authentication', function(){
 		req.body.username = 'user@user.com';
 		req.body.password = '123';
 
-		sandbox.stub(userRepo, 'getByUsername', () => {
+		sandbox.stub(userRepo, 'byUsername', () => {
 			return Promise.resolve({
 				username: 'user@user.com',
 				password: 'wrong password',
@@ -85,8 +85,8 @@ describe('API - authentication', function(){
 
 		return target(req, res)
 			.then( () => {
-				expect(userRepo.getByUsername.calledOnce).to.be.true;
-				expect(userRepo.getByUsername.calledWithExactly('user@user.com')).to.be.true;
+				expect(userRepo.byUsername.calledOnce).to.be.true;
+				expect(userRepo.byUsername.calledWithExactly('user@user.com')).to.be.true;
 
 				expect(res.status.calledOnce).to.be.true;
 				expect(res.status.calledWithExactly(401)).to.be.true;
@@ -98,7 +98,7 @@ describe('API - authentication', function(){
 		req.body.username = 'user@user.com';
 		req.body.password = '123';
 
-		sandbox.stub(userRepo, 'getByUsername', () => {
+		sandbox.stub(userRepo, 'byUsername', () => {
 			return Promise.reject(new Error('somthing went wrong.'));
 		});
 
@@ -106,8 +106,8 @@ describe('API - authentication', function(){
 
 		return target(req, res)
 			.then( () => {
-				expect(userRepo.getByUsername.calledOnce).to.be.true;
-				expect(userRepo.getByUsername.calledWithExactly('user@user.com')).to.be.true;
+				expect(userRepo.byUsername.calledOnce).to.be.true;
+				expect(userRepo.byUsername.calledWithExactly('user@user.com')).to.be.true;
 
 				expect(res.status.calledOnce).to.be.true;
 				expect(res.status.calledWithExactly(500)).to.be.true;

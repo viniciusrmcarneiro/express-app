@@ -4,6 +4,7 @@ const shortid = require('shortid');
 
 
 const fileName = path.join(__dirname,'./users.json');
+
 function getUsers(){
 	const rawUsers = fs.readFileSync(fileName).toString();
 	const users = JSON.parse(rawUsers);
@@ -14,7 +15,7 @@ function storeUsers(users){
 	fs.writeFileSync(fileName, JSON.stringify(users, null, 4));
 }
 
-function getByUsername(username) {
+function byUsername(username) {
 	return new Promise( resolve => {
 
 		const users =  getUsers();
@@ -35,7 +36,7 @@ function getByUsername(username) {
 
 function create(username, password){
 
-	return getByUsername(username)
+	return byUsername(username)
 		.then((user) => {
 			if (user){
 				throw new Error('User name has already been taken');
@@ -76,8 +77,21 @@ function update(userId, userData){
 	});
 }
 
+
+function all(){
+	return new Promise( (resolve) => {
+		const users = getUsers();
+		resolve(Object.keys(users).map(userId => ({
+				id: users[userId].id,
+				username: users[userId].username,
+			})
+		));
+	})
+}
+
 module.exports = {
-	getByUsername,
 	create,
 	update,
+	byUsername,
+	all,
 };

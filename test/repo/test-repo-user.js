@@ -17,7 +17,7 @@ describe('REPO - USER', function(){
         sandbox.restore();
     });
 
-    describe('getByUsername', function(){
+    describe('byUsername', function(){
         it("should return the user", function(){
             const user = {
                 id: '123',
@@ -29,7 +29,7 @@ describe('REPO - USER', function(){
                 return JSON.stringify({ [user.id]: user});
             });
 
-            target.getByUsername(user.username);
+            target.byUsername(user.username);
 
         });
 
