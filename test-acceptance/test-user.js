@@ -13,9 +13,25 @@ describe("USER API", function() {
     };
 
     var userId;
+    var userToken, adminToken;
+
+    it("should authenticate as admin user", function () {
+        return chakram.post("http://localhost:3000/authentication", { 
+            username: userAdminInfo.username,
+            password: userAdminInfo.password,
+        })
+            .then( response => {
+                expect(response).to.have.status(200);
+                adminToken = response.body;
+            });
+    });
 
     it("should create an user", function () {
-        return chakram.post("http://localhost:3000/users", userInfo)
+        return chakram.post("http://localhost:3000/users", userInfo,{
+            headers: {
+                'authentication-token': adminToken,
+            }
+        })
             .then( response => {
                 expect(response).to.have.status(200);
                 expect(response.body).to.be.a('string').to.have.length.of.at.least(1);
@@ -30,6 +46,7 @@ describe("USER API", function() {
         })
             .then( response => {
                 expect(response).to.have.status(200);
+                userToken = response.body;
             });
     });
 
@@ -37,9 +54,15 @@ describe("USER API", function() {
         return chakram.put(`http://localhost:3000/users/${userId}`, { 
             username: `x-${userInfo.username}`,
             password: `x-${userInfo.password}`,
+        }, {
+            headers: {
+                'authentication-token': userToken,
+            }
         })
             .then( response => {
                 expect(response).to.have.status(200);
+                userInfo.username = `x-${userInfo.username}`;
+                userInfo.password = `x-${userInfo.password}`;
             });
     });
 

@@ -7,10 +7,10 @@ function authentication(req, res){
 		res.send();
 		return;
 	}
-
 	return userRepo
 		.byUsername(req.body.username)
 			.then( user => {
+				
 				if (!user){
 					res.status(404);
 					res.send('404');

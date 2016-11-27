@@ -7,18 +7,6 @@ function _delete(req, res){
 function all(req, res){
 	return userRepo.all()
 		.then( users => {
-			try {
-				const token = jwt.decode(req.headers['authentication-token'], 'just a simple screct phrase');
-				if (!token.isAdmin){
-					res.status(403);
-					res.send();
-					return;
-				}
-				
-			} catch (ex){
-				console.error(ex.stack);
-			}
-
 			res.status(200);
 			res.send(users);
 		});
