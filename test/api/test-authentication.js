@@ -25,9 +25,7 @@ describe('API - authentication', function(){
 
 	it("should return 400 if there're no username nor password", function(){
 		target(req, res);
-
-		expect(res.status.calledOnce).to.be.true;
-		expect(res.status.calledWithExactly(400)).to.be.true;
+		sinon.assert.calledWithExactly(res.status, 400);
 		expect(res.send.calledOnce).to.be.true;
 	});
 

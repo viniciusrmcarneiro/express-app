@@ -1,24 +1,20 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
-const userFilter = require('./filters/user-filter');
-const adminFilter = require('./filters/admin-filter');
+
+
+const app = express();
 app.use(bodyParser.json());
 
+// ********* authentication
 const authentication = require('./api/authentication');
-const user = require('./api/user');
-
 app.post('/authentication', authentication);
+// **************
 
-
-app.put('/users/:userId', userFilter, user.update)
-app.post('/users', userFilter, adminFilter, user.create);
-app.get('/users', userFilter, adminFilter, user.all);
-
+// ********* user
+const userExpress = require('./user-app');
+app.use('/users', userExpress);
+// **************
 
 app.listen(3000, function () {
 	console.log('Example app listening on port 3000!')
 });
-
-// const userRoutes = express.Router();
-// userRoutes.
