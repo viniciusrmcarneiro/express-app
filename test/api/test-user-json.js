@@ -3,7 +3,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 const mocks = require('../mocks');
-const userRepo = require('../../repo/user');
+const userRepo = require('../../repo/user-json');
 
 describe('API - USER', function(){
     var target = require('../../api/user');

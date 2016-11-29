@@ -66,7 +66,7 @@ describe("USER API", function() {
             });
     });
 
-    it("get all users should return 403 if the is not an admin", function () {
+    it("get all users should return 403 if the user is not an admin", function () {
         return chakram.post("http://localhost:3000/authentication", { 
             username: userInfo.username,
             password: userInfo.password,
