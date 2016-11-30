@@ -9,5 +9,6 @@ const userExpress = express();
 userExpress.put('/:userId', userFilter, user.update)
 userExpress.post('/', userFilter, adminFilter, user.create);
 userExpress.get('/', userFilter, adminFilter, user.all);
+userExpress.delete('/:userId', userFilter, adminFilter, user.delete);
 
 module.exports = userExpress;

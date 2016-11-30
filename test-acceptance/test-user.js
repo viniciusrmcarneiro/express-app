@@ -109,6 +109,24 @@ describe("USER API", function() {
 
                     });
             });
+    });
+
+    it("should delete an user", function () {
+        return chakram.post("http://localhost:3000/authentication", { 
+            username: userAdminInfo.username,
+            password: userAdminInfo.password,
+        })
+            .then( authenticationResponse => {
+                const authenticationToken = authenticationResponse.body;
+                return chakram.del(`http://localhost:3000/users/${userId}`, {}, {
+                    headers: {
+                        'authentication-token': authenticationToken,
+                    }
+                })
+                    .then( response => {
+                        expect(response).to.have.status(200);
+                    });
+            });
 
     });
 

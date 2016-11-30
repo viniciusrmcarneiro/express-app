@@ -2,6 +2,24 @@ const userRepo = require('../repo/user');
 const jwt = require('jsonwebtoken');
 
 function _delete(req, res){
+    // validating the request
+    if (!req.params.userId){
+        res.status(400);
+        res.send();
+        return;
+    }
+
+    return userRepo.remove(req.params.userId)
+        .then( user => {
+            res.status(200);
+            res.send('ok');
+        })
+        .catch( ex => {
+            console.error(ex.stack);
+
+            res.status(500);
+            res.send(ex.message);
+        });
 }
 
 function all(req, res){

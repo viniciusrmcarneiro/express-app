@@ -50,10 +50,16 @@ const all = () => {
         })
 };
 
-
+const remove = (userId) => {
+    return _userCollection
+        .remove({
+            _id: mongodb.ObjectId(userId)
+        });
+}
 module.exports = {
     create,
     update,
     byUsername,
     all,
+    remove,
 };
