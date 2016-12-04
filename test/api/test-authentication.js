@@ -9,12 +9,10 @@ describe('API - authentication', function(){
 	var target = require('../../api/authentication');
 	var sandbox = sinon.sandbox.create();
 	var res = mocks.res;
-	var req;
+	var req = mocks.req;
 
 	beforeEach(function(){
-		req = {
-			body: {},
-		};
+		sandbox.spy(req.log, 'warn');
 		sandbox.spy(res, 'status');
 		sandbox.spy(res, 'send');
 	});
@@ -37,7 +35,7 @@ describe('API - authentication', function(){
 			return Promise.resolve({
 				username: 'user@user.com',
 				password: '123',
-			})
+			});
 		});
 
 		return target(req, res)
@@ -51,7 +49,7 @@ describe('API - authentication', function(){
 			});
 	});
 
-	it("should return 404 if there userid doesn't exists", function(){
+	it("should return 403 and log if there userid doesn't exists", function(){
 		req.body.username = 'user@user.com';
 		req.body.password = '123';
 
@@ -65,8 +63,9 @@ describe('API - authentication', function(){
 				expect(userRepo.byUsername.calledWithExactly('user@user.com')).to.be.true;
 
 				expect(res.status.calledOnce).to.be.true;
-				expect(res.status.calledWithExactly(404)).to.be.true;
+				sinon.assert.calledWithExactly(res.status, 403);
 				expect(res.send.calledOnce).to.be.true;
+				sinon.assert.calledWithExactly(req.log.warn, 'user not found');
 			});
 	});
 
@@ -87,8 +86,9 @@ describe('API - authentication', function(){
 				expect(userRepo.byUsername.calledWithExactly('user@user.com')).to.be.true;
 
 				expect(res.status.calledOnce).to.be.true;
-				expect(res.status.calledWithExactly(401)).to.be.true;
+				expect(res.status.calledWithExactly(403)).to.be.true;
 				expect(res.send.calledOnce).to.be.true;
+				sinon.assert.calledWithExactly(req.log.warn, "user password doesn't match.");
 			});
 	});
 

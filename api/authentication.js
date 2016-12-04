@@ -10,16 +10,18 @@ function authentication(req, res){
     return userRepo
         .byUsername(req.body.username)
             .then( user => {
-                
+
                 if (!user){
-                    res.status(404);
-                    res.send('404');
+                    res.status(403);
+                    res.send('Access denied');
+                    req.log.warn("user not found");
                     return;
                 }
 
                 if (user.password != req.body.password){
-                    res.status(401);
-                    res.send('401');
+                    res.status(403);
+                    res.send('Access denied');
+                    req.log.warn("user password doesn't match.");
                     return;
                 }
 

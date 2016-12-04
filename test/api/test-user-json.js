@@ -53,11 +53,11 @@ describe('API - USER', function(){
 
             return target.create(req, res)
                 .then(() => {
-                    expect(res.status.calledOnce).to.be.true;
-                    expect(res.status.calledWithExactly(409)).to.be.true;
+                    sinon.assert.calledOnce(res.status);
+                    sinon.assert.calledWithExactly(res.status, 409);
 
-                    expect(res.send.calledWithExactly('User name has already been taken')).to.be.true;
-                    expect(res.send.calledOnce).to.be.true;
+                    sinon.assert.calledWithExactly(res.send('User name has already been taken'));
+                    sinon.assert.calledOnce(res.send);
                 });
 
         });

@@ -3,6 +3,14 @@ const res = {
 	send: () => {},
 };
 
+const req = {
+    body: {},
+    log: {
+        warn: () => {},
+    },
+};
+
 module.exports = {
-	res
+	res,
+    req,
 };

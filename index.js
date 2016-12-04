@@ -1,9 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const logger = require('./utils/logger');
 
 const app = express();
 app.use(bodyParser.json());
+
+app.use(function(req, res, next){
+    req.log = logger;
+    next();
+});
 
 // ********* authentication
 const authentication = require('./api/authentication');

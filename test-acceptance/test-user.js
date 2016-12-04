@@ -1,5 +1,6 @@
 const chakram = require('chakram');
 const expect = chakram.expect;
+const helpers = require('./utils/helpers');
 
 describe("USER API", function() {
     const userInfo = {
@@ -15,15 +16,11 @@ describe("USER API", function() {
     var userId;
     var userToken, adminToken;
 
-    it("should authenticate as admin user", function () {
-        return chakram.post("http://localhost:3000/authentication", { 
-            username: userAdminInfo.username,
-            password: userAdminInfo.password,
-        })
-            .then( response => {
-                expect(response).to.have.status(200);
-                adminToken = response.body;
-            });
+    before(function(){
+        // getting in an admin token
+        return helpers
+            .getAuthenticationToken(userAdminInfo.username, userAdminInfo.password)
+            .then( token => adminToken = token);
     });
 
     it("should create an user", function () {
@@ -36,27 +33,33 @@ describe("USER API", function() {
                 expect(response).to.have.status(200);
                 expect(response.body).to.be.a('string').to.have.length.of.at.least(1);
                 userId = response.body;
+                return helpers
+                    .getAuthenticationToken(userInfo.username, userInfo.password)
+                    .then( token => userToken = token);
             });
     });
 
-    it("should authenticate the user", function () {
-        return chakram.post("http://localhost:3000/authentication", { 
-            username: userInfo.username,
-            password: userInfo.password,
-        })
-            .then( response => {
-                expect(response).to.have.status(200);
-                userToken = response.body;
-            });
-    });
-
-    it("should update the user", function () {
+    it("should not update the user and return 403 if the user is not an admin", function () {
         return chakram.put(`http://localhost:3000/users/${userId}`, { 
             username: `x-${userInfo.username}`,
             password: `x-${userInfo.password}`,
         }, {
             headers: {
                 'authentication-token': userToken,
+            }
+        })
+            .then( response => {
+                expect(response).to.have.status(403);
+            });
+    });
+
+    it("as Admin should update the user", function () {
+        return chakram.put(`http://localhost:3000/users/${userId}`, { 
+            username: `x-${userInfo.username}`,
+            password: `x-${userInfo.password}`,
+        }, {
+            headers: {
+                'authentication-token': adminToken,
             }
         })
             .then( response => {
