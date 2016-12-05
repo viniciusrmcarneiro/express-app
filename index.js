@@ -15,6 +15,11 @@ const authentication = require('./api/authentication');
 app.post('/authentication', authentication);
 // **************
 
+// ********* authentication
+const authenticationExpress = require('./authentication-app');
+app.use('/authentication-ms', authenticationExpress);
+// **************
+
 // ********* user
 const userExpress = require('./user-app');
 app.use('/users', userExpress);
