@@ -3,7 +3,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 const mocks = require('../mocks');
-const userRepo = require('../../repo/user-json');
+const userRepo = require('../../repo/user');
 
 describe('API - USER', function(){
     var target = require('../../api/user');
@@ -56,8 +56,8 @@ describe('API - USER', function(){
                     sinon.assert.calledOnce(res.status);
                     sinon.assert.calledWithExactly(res.status, 409);
 
-                    sinon.assert.calledWithExactly(res.send('User name has already been taken'));
                     sinon.assert.calledOnce(res.send);
+                    sinon.assert.calledWithExactly(res.send, 'User name has already been taken');
                 });
 
         });

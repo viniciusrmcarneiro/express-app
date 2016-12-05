@@ -1,6 +1,6 @@
 const res = {
-	status: () => {},
-	send: () => {},
+    status: () => {},
+    send: () => {},
 };
 
 const req = {
@@ -11,6 +11,6 @@ const req = {
 };
 
 module.exports = {
-	res,
+    res,
     req,
 };
