@@ -10,14 +10,14 @@ app.use(function(req, res, next){
     next();
 });
 
-// ********* authentication
-const authentication = require('./api/authentication');
-app.post('/authentication', authentication);
-// **************
+// // ********* authentication
+// const authentication = require('./api/authentication');
+// app.post('/authentication', authentication);
+// // **************
 
 // ********* authentication
 const authenticationExpress = require('./authentication-app');
-app.use('/authentication-ms', authenticationExpress);
+app.use('/authentication', authenticationExpress);
 // **************
 
 // ********* user

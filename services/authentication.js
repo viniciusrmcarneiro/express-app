@@ -2,9 +2,30 @@ const userRepo = require('../repo/user');
 const jwt = require('jsonwebtoken');
 const resources =  require('../resources');
 
+class AccessDenied extends Error {
+    constructor(){
+        super(resources.messages.accessDenied);
+        this.httpCode = 403;
+    }
+}
+
+class InvalidPassword extends Error {
+    constructor(){
+        super(resources.messages.accessDenied);
+        this.httpCode = 403;
+    }
+}
+
+class InvalidCall extends Error {
+    constructor(){
+        super(resources.messages.badRequest);
+        this.httpCode = 400;
+    }
+}
+
 function authenticate(params, context){
     if (!params.username || !params.password){
-        throw new Error(resources.messages.badRequest);
+        throw new InvalidCall();
     }
 
     return userRepo
@@ -13,12 +34,12 @@ function authenticate(params, context){
 
                 if (!user){
                     context.log.warn("user not found");
-                    throw new Error(resources.messages.accessDenied);
+                    throw new AccessDenied();
                 }
 
                 if (user.password != params.password){
                     context.log.warn("user password doesn't match.");
-                    throw new Error(resources.messages.accessDenied);
+                    throw new InvalidPassword();
                 }
 
                 const token = jwt.sign({
@@ -32,5 +53,5 @@ function authenticate(params, context){
 }
 
 module.exports = {
-    authenticate
+    authenticate,
 };

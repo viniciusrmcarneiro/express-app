@@ -1,14 +1,9 @@
 const express = require('express');
-const authentication = require('./api/authentication-ms');
-const expressToMS = require('./filters/express-to-ms');
+const authentication = require('./services/authentication');
+const serviceToMiddleware = require('./filters/service-to-express-middleware');
 
 const authenticationExpress = express();
 
-authenticationExpress.post('/', expressToMS(authentication.authenticate));
-
-
-authenticationExpress.post('/', (req, res) => {
-    
-});
+authenticationExpress.post('/', serviceToMiddleware(authentication.authenticate));
 
 module.exports = authenticationExpress;
