@@ -1,31 +1,34 @@
 const userRepo = require('../repo/user');
 const jwt = require('jsonwebtoken');
 const resources =  require('../resources');
+const errors = require('../utils/errors');
 
-class AccessDenied extends Error {
-    constructor(){
-        super(resources.messages.accessDenied);
-        this.httpCode = 403;
-    }
-}
+const promiseWrapper = (func) => {
+    return function(){
+        const args = Array.from(arguments);
+        return new Promise( (resolve, reject) => {
 
-class InvalidPassword extends Error {
-    constructor(){
-        super(resources.messages.accessDenied);
-        this.httpCode = 403;
-    }
-}
+            const promiseResult = func.apply(null, args);
+            
+            promiseResult
+                .then(resolve)
+                .catch(reject)
+            
 
-class InvalidCall extends Error {
-    constructor(){
-        super(resources.messages.badRequest);
-        this.httpCode = 400;
-    }
-}
+            /*
+            short syntax
+            func.apply(null, args)
+                .then(resolve)
+                .catch(reject);
+            */
+        });
+    };
+};
 
-function authenticate(params, context){
+
+function authenticate(params, context) {
     if (!params.username || !params.password){
-        throw new InvalidCall();
+        throw new errors.InvalidCall();
     }
 
     return userRepo
@@ -34,13 +37,13 @@ function authenticate(params, context){
 
                 if (!user){
                     context.log.warn("user not found");
-                    throw new AccessDenied();
+                    throw new errors.AccessDenied();
                 }
 
                 if (user.password != params.password){
                     context.log.warn("user password doesn't match.");
-                    throw new InvalidPassword();
-                }
+                    throw new errors.InvalidPassword();
+                }   
 
                 const token = jwt.sign({
                     id : user.id,
@@ -53,5 +56,5 @@ function authenticate(params, context){
 }
 
 module.exports = {
-    authenticate,
+    authenticate: promiseWrapper(authenticate),
 };

@@ -1,21 +1,17 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-const _databaseName = 'express-app';
-const _mongoHost = 'localhost:27017';
-
-const _mongoURL = `mongodb://${_mongoHost}/${_databaseName}`;
-
 var _connection = null;
 var _userCollection = null;
 
-MongoClient.connect(_mongoURL)
-    .then( newConnection => {
-        _connection = newConnection;
-        _userCollection = _connection.collection('users');
-    })
-    .catch( ex => console.error(ex));
 
+const setup = (url) => {
+    return MongoClient.connect(_mongoURL)
+        .then( newConnection => {
+            _connection = newConnection;
+            _userCollection = _connection.collection('users');
+        });
+}
 
 const create = (username, password) => {
     return _userCollection
