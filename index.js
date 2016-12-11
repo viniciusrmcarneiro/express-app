@@ -6,8 +6,8 @@ const _databaseName = 'express-app';
 const _mongoHost = 'localhost:27017';
 const _mongoURL = `mongodb://${_mongoHost}/${_databaseName}`;
 
-const usersRepo = require('repo/users');
-usersRepo
+const userRepo = require('./repo/user');
+userRepo
     .setup(_mongoURL)
     .catch( ex => console.error(ex));
 

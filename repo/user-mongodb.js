@@ -6,7 +6,7 @@ var _userCollection = null;
 
 
 const setup = (url) => {
-    return MongoClient.connect(_mongoURL)
+    return MongoClient.connect(url)
         .then( newConnection => {
             _connection = newConnection;
             _userCollection = _connection.collection('users');
@@ -53,6 +53,7 @@ const remove = (userId) => {
         });
 }
 module.exports = {
+    setup,
     create,
     update,
     byUsername,

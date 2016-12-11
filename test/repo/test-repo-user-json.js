@@ -2,12 +2,11 @@ const sinon = require('sinon');
 const chai = require('chai');
 const expect = chai.expect;
 
-const userRepo = require('../../repo/user');
 
 const fs = require('fs');
 
 describe('REPO - USER', function(){
-    var target = require('../../repo/user');
+    var target = require('../../repo/user-json');
     var sandbox = sinon.sandbox.create();
 
     beforeEach(function(){

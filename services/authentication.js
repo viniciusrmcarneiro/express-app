@@ -12,8 +12,7 @@ const promiseWrapper = (func) => {
             
             promiseResult
                 .then(resolve)
-                .catch(reject)
-            
+                .catch(reject);
 
             /*
             short syntax
