@@ -9,10 +9,11 @@ class AccessDenied extends Error {
 
 class InvalidPassword extends Error {
     constructor(){
-        super(resources.messages.accessDenied);
+        super(resources.messages.invalidPassword);
         this.httpCode = 403;
     }
 }
+
 
 class InvalidCall extends Error {
     constructor(){
@@ -21,9 +22,16 @@ class InvalidCall extends Error {
     }
 }
 
+class InvalidCredentials extends Error {
+    constructor(){
+        super(resources.messages.accessDenied);
+        this.httpCode = 403;
+    }
+}
 
 module.exports = {
     AccessDenied,
     InvalidPassword,
     InvalidCall,
+    InvalidCredentials,
 }

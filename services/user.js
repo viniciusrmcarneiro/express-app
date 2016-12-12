@@ -29,15 +29,13 @@ function all(req, res){
         });
 }
 
-function update(req, res){
-    // validating the request
-    if (!req.params.userId){
-        res.status(400);
-        res.send();
-        return;
+function update(params){
+    if (!params.userId){
+        throw new errors.InvalidCall();
     }
 
-    userRepo.update(req.params.userId, req.body)
+
+    return userRepo.update(params.userId, req.body)
         .then( user => {
             res.status(200);
             res.send('ok');
@@ -50,39 +48,27 @@ function update(req, res){
         });
 }
 
-function create(req, res){
-    // validating the request
-    if (!req.body.username || !req.body.password){
-        res.status(400);
-        res.send();
-        return;
+function create(params, context){
+    if (!params.username || !params.password){
+        throw new errors.InvalidCall();
     }
 
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = params.username;
+    const password = params.password;
 
     if (username === password){
-        res.status(400);
-        res.send('username must be different from password.');
-        return;
+        throw new errors.InvalidPassword('username must be different from password.')
     }
 
-    return userRepo.create(username, password)
-        .then( newUser => {
-            res.status(200);
-            res.send(newUser.id);
-        })
-        .catch( ex => {
-            if (ex.message == 'User name has already been taken'){
-                res.status(409);
-                res.send(ex.message);
-                return;
+    return userRepo.byUsername(username)
+        .then( user => {
+            if (user){
+                throw new errors.DuplicateUser(ex.message);
             }
 
-            console.error(ex.stack);
+            return userRepo.create(username, password)
+                .then( newUser => newUser.id)
 
-            res.status(500);
-            res.send(ex.message);
         });
 }
 

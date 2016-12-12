@@ -41,7 +41,7 @@ function authenticate(params, context) {
 
                 if (user.password != params.password){
                     context.log.warn("user password doesn't match.");
-                    throw new errors.InvalidPassword();
+                    throw new errors.InvalidCredentials();
                 }   
 
                 const token = jwt.sign({

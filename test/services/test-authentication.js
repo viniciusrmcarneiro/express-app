@@ -27,7 +27,7 @@ describe('AUTHENTICATION SERVICE', function(){
         sandbox.restore();
     });
 
-    it("should throw InvalidPassword if there're no username nor password", function(){
+    it("should throw InvalidCall if there're no username nor password", function(){
         return target.authenticate({})
             .should.be.rejectedWith(errors.InvalidCall);
     });
@@ -62,7 +62,7 @@ describe('AUTHENTICATION SERVICE', function(){
             });
     });
 
-    it("should throw InvalidPassword if there password doesn't match", function(){
+    it("should throw InvalidCredentials if the password doesn't match", function(){
         sandbox.stub(userRepo, 'byUsername', () => {
             return Promise.resolve({
                 username: 'user@user.com',
@@ -71,7 +71,7 @@ describe('AUTHENTICATION SERVICE', function(){
         });
 
         return target.authenticate(user, {log : mocks.log})
-            .should.be.rejectedWith(errors.InvalidPassword)
+            .should.be.rejectedWith(errors.InvalidCredentials)
             .then( () => {
                 expect(userRepo.byUsername.calledOnce).to.be.true;
                 expect(userRepo.byUsername.calledWithExactly('user@user.com')).to.be.true;
