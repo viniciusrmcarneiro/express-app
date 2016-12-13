@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/test-*.js",
+    "test-only": "mocha test/**/test-*.js",
+    "test": "istanbul cover -x \"*test*\" node_modules/mocha/bin/_mocha -- test/**/test-*.js",
     "acceptance-test": "mocha test-acceptance/test-*.js"
   },
   "repository": {
@@ -30,6 +31,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chakram": "^1.5.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.1.2",
     "sinon": "^1.17.6"
   }

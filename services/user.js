@@ -1,4 +1,6 @@
 const userRepo = require('../repo/user');
+const errors = require('../utils/errors');
+const promiseWrapper = require('../utils/promise-wrapper');
 
 function _delete(req, res){
     // validating the request
@@ -34,18 +36,25 @@ function update(params){
         throw new errors.InvalidCall();
     }
 
+    const user = Object.assign({}, params);
 
-    return userRepo.update(params.userId, req.body)
-        .then( user => {
-            res.status(200);
-            res.send('ok');
-        })
-        .catch( ex => {
-            console.error(ex.stack);
+    if (user.username === user.password){
+        throw new errors.InvalidPassword('username must be different from password.')
+    }
 
-            res.status(500);
-            res.send(ex.message);
+    return userRepo.byUsername(user.username)
+        .then( userDB => {
+            if (userDB){
+                throw new errors.DuplicateUser();
+            }
+
+            return userRepo.update(params.userId, update)
+                .then( () => {
+                    return {};
+                });
+
         });
+
 }
 
 function create(params, context){
@@ -63,7 +72,7 @@ function create(params, context){
     return userRepo.byUsername(username)
         .then( user => {
             if (user){
-                throw new errors.DuplicateUser(ex.message);
+                throw new errors.DuplicateUser();
             }
 
             return userRepo.create(username, password)
@@ -75,6 +84,6 @@ function create(params, context){
 module.exports = {
     all,
     delete: _delete,
-    update,
-    create,
+    update: promiseWrapper(update),
+    create: promiseWrapper(create),
 };

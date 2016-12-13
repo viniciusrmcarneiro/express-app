@@ -1,6 +1,9 @@
 const sinon = require('sinon');
 const chai = require('chai');
-const expect = chai.expect;
+const chaiAsPromised = require("chai-as-promised");
+
+chai.use(chaiAsPromised);
+chai.should();
 
 const errors = require('../../utils/errors');
 const mocks = require('../mocks');
@@ -18,7 +21,7 @@ describe('SERVICES - USER', function(){
     });
 
     describe('CREATE USER', function(){
-        it("should return InvalidCall if there're no username nor password", function(){
+        it("should throw InvalidCall if there're no username nor password", function(){
             return target.create({})
                 .should.be.rejectedWith(errors.InvalidCall);
         });
@@ -44,6 +47,21 @@ describe('SERVICES - USER', function(){
 
         });
 
+        it("should create the user", function(){
+            const user = {
+                username: 'test',
+                password: 'password-123',
+            };
+
+            sandbox.stub(userRepo, 'byUsername', () => Promise.resolve(null));
+            sandbox.stub(userRepo, 'create', () => Promise.resolve(
+                Object.assign( {id: '123'}, user)
+            ));
+
+            return target.create(user);
+
+        });
+        
     });
 
     describe('UPDATE USER', function(){
@@ -93,13 +111,13 @@ describe('SERVICES - USER', function(){
     });
 
     describe('DELETE USER', function(){
-        it("should throw InvalidCall if there're no userID", function(){
+        it.skip("should throw InvalidCall if there're no userID", function(){
         });
 
-        it("should throw NotFound if the userId doesn't exist", function(){
+        it.skip("should throw NotFound if the userId doesn't exist", function(){
         });
 
-        it("should delete the user", function(){
+        it.skip("should delete the user", function(){
         });
 
     });
