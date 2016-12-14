@@ -37,6 +37,7 @@ function update(params){
     }
 
     const user = Object.assign({}, params);
+    delete user.userId;
 
     if (user.username === user.password){
         throw new errors.InvalidPassword('username must be different from password.')
@@ -48,7 +49,7 @@ function update(params){
                 throw new errors.DuplicateUser();
             }
 
-            return userRepo.update(params.userId, update)
+            return userRepo.update(params.userId, user)
                 .then( () => {
                     return {};
                 });
@@ -83,7 +84,7 @@ function create(params, context){
 
 module.exports = {
     all,
-    delete: _delete,
+    delete: promiseWrapper(_delete),
     update: promiseWrapper(update),
     create: promiseWrapper(create),
 };

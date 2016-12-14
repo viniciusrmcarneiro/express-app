@@ -29,9 +29,25 @@ class InvalidCredentials extends Error {
     }
 }
 
+class DuplicateUser extends Error {
+    constructor(){
+        super(resources.messages.duplicateUser);
+        this.httpCode = 409;
+    }
+}
+
+class UserNotFound extends Error {
+    constructor(){
+        super(`User ${resources.messages.notFound}`);
+        this.httpCode = 404;
+    }
+}
+
 module.exports = {
+    UserNotFound,
     AccessDenied,
     InvalidPassword,
     InvalidCall,
     InvalidCredentials,
+    DuplicateUser,
 }

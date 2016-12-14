@@ -97,27 +97,58 @@ describe('SERVICES - USER', function(){
 
         it("should update the user", function(){
             const user = {
-                id: '123',
+                userId: '123',
                 username: 'test',
                 password: 'password-123',
             };
 
-            sandbox.stub(userRepo, 'byUsername', () => Promise.resolve(user));
+            const expectedUser = {
+                username: 'test',
+                password: 'password-123',
+            };
 
-            return target.update(user);
+            sandbox.stub(userRepo, 'byUsername', () => Promise.resolve(null));
+            sandbox.stub(userRepo, 'update', () => Promise.resolve({}));
+
+            return target.update(user)
+                .then(() => {
+                    sinon.assert.calledOnce(userRepo.update);
+                    sinon.assert.calledWithExactly(userRepo.update, user.userId, expectedUser);
+                })
         });
-
 
     });
 
     describe('DELETE USER', function(){
-        it.skip("should throw InvalidCall if there're no userID", function(){
+        it("should throw InvalidCall if there're no userID", function(){
+            return target.delete({})
+                .should.be.rejectedWith(errors.InvalidCall);
         });
 
-        it.skip("should throw NotFound if the userId doesn't exist", function(){
+        it("should throw NotFound if the userId doesn't exist", function(){
+            const userId = '123';
+
+            sandbox.stub(userRepo, 'byUsername', () => Promise.resolve(null));
+
+            return target.delete({userId})
+                .should.be.rejectedWith(errors.UserNotFound);
         });
 
-        it.skip("should delete the user", function(){
+        it("should delete the user", function(){
+            const userId = '123';
+            const user = {
+                id: userId,
+                username: '123',
+            }
+
+            sandbox.stub(userRepo, 'byUsername', () => Promise.resolve(user));
+            sandbox.stub(userRepo, 'remove', () => Promise.resolve({}));
+
+            return target.delete({userId})
+                .then(() => {
+                    sinon.assert.calledOnce(userRepo.remove);
+                    sinon.assert.calledWithExactly(userRepo.remove, userId);
+                })
         });
 
     });
