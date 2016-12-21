@@ -2,33 +2,30 @@ const userRepo = require('../repo/user');
 const errors = require('../utils/errors');
 const promiseWrapper = require('../utils/promise-wrapper');
 
-function _delete(req, res){
-    // validating the request
-    if (!req.params.userId){
-        res.status(400);
-        res.send();
-        return;
-    }
-
-    return userRepo.remove(req.params.userId)
-        .then( user => {
-            res.status(200);
-            res.send('ok');
-        })
-        .catch( ex => {
-            console.error(ex.stack);
-
-            res.status(500);
-            res.send(ex.message);
-        });
-}
-
 function all(req, res){
     return userRepo.all()
         .then( users => {
             res.status(200);
             res.send(users);
         });
+}
+
+function _delete(params){
+
+    if (!params.userId){
+        throw new errors.InvalidCall();
+    }
+
+    return userRepo.byId(params.userId)
+        .then( user => {
+            if (!user){
+                throw new errors.UserNotFound();
+            }
+
+            return userRepo.remove(params.userId)
+                .then( user => params.userId );
+        })
+
 }
 
 function update(params){

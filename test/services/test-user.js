@@ -128,10 +128,14 @@ describe('SERVICES - USER', function(){
         it("should throw NotFound if the userId doesn't exist", function(){
             const userId = '123';
 
-            sandbox.stub(userRepo, 'byUsername', () => Promise.resolve(null));
+            sandbox.stub(userRepo, 'byId', () => Promise.resolve(null));
 
             return target.delete({userId})
-                .should.be.rejectedWith(errors.UserNotFound);
+                .should.be.rejectedWith(errors.UserNotFound)
+                .then(() => {
+                    sinon.assert.calledOnce(userRepo.byId);
+                    sinon.assert.calledWithExactly(userRepo.byId, userId);
+                })
         });
 
         it("should delete the user", function(){
@@ -141,11 +145,14 @@ describe('SERVICES - USER', function(){
                 username: '123',
             }
 
-            sandbox.stub(userRepo, 'byUsername', () => Promise.resolve(user));
+            sandbox.stub(userRepo, 'byId', () => Promise.resolve(user));
             sandbox.stub(userRepo, 'remove', () => Promise.resolve({}));
 
             return target.delete({userId})
                 .then(() => {
+                    sinon.assert.calledOnce(userRepo.byId);
+                    sinon.assert.calledWithExactly(userRepo.byId, userId);
+
                     sinon.assert.calledOnce(userRepo.remove);
                     sinon.assert.calledWithExactly(userRepo.remove, userId);
                 })

@@ -34,6 +34,10 @@ const byUsername = (username) => {
             });
 };
 
+const byId = (userId) => {
+    return _userCollection
+        .findOne({ _id: mongodb.ObjectId(userId) })
+};
 const all = () => {
     return _userCollection.find().toArray()
         .then( users => {
@@ -57,6 +61,7 @@ module.exports = {
     create,
     update,
     byUsername,
+    byId,
     all,
     remove,
 };
