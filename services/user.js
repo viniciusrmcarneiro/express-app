@@ -2,12 +2,8 @@ const userRepo = require('../repo/user');
 const errors = require('../utils/errors');
 const promiseWrapper = require('../utils/promise-wrapper');
 
-function all(req, res){
-    return userRepo.all()
-        .then( users => {
-            res.status(200);
-            res.send(users);
-        });
+function all(){
+    return userRepo.all();
 }
 
 function _delete(params){
@@ -80,7 +76,7 @@ function create(params, context){
 }
 
 module.exports = {
-    all,
+    all: promiseWrapper(all),
     delete: promiseWrapper(_delete),
     update: promiseWrapper(update),
     create: promiseWrapper(create),

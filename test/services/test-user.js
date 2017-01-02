@@ -160,6 +160,17 @@ describe('SERVICES - USER', function(){
 
     });
 
+    describe('ALL USERS', function(){
+        it("should get all the users", function(){
+            sandbox.stub(userRepo, 'all', () => Promise.resolve([]));
+            return target.all({})
+                .then(() => {
+                    sinon.assert.calledOnce(userRepo.all);
+                });
+        });
+
+    });
+
 });
 
 

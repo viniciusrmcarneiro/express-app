@@ -19,12 +19,6 @@ app.use(function(req, res, next){
     next();
 });
 
-// // ********* authentication
-// const authentication = require('./api/authentication');
-// app.post('/authentication', authentication);
-// // **************
-
-
 
 // ********* authentication
 const authenticationExpress = require('./authentication-app');
