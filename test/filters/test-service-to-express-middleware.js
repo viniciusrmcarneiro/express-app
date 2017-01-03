@@ -28,21 +28,46 @@ describe('FILTERS', function(){
             sandbox.restore();
         });
        
-        it.only('should return 500 if the function throws an error', function(){
+        it('should return 500 if the function throws an error', function(){
             const myError = new Error('some error');
 
-            // const msSpy = sandbox.stub();
-            // msSpy.throws(myError);
-        
-            const msSpy = sandbox.spy( () => {
-                throw myError;
-            });
+            const msSpy = sandbox.spy(() => Promise.reject(myError));
 
-
-            target(() => msSpy)(req, res);
-            sinon.assert.calledWithExactly(res.status, 500);
-            sinon.assert.calledWithExactly(res.send, myError.message);
+            return target(msSpy)(req, res)
+                .then(() => {
+                    sinon.assert.calledWithExactly(res.status, 500);
+                    sinon.assert.calledWithExactly(res.send, myError.message);
+                });
         });
+
+        it('should return 404 if the function throws an error with a httpCode 404', function(){
+            const myError = new Error('some error');
+            myError.httpCode = 404;
+
+            const msSpy = sandbox.spy(() => Promise.reject(myError));
+
+            return target(msSpy)(req, res)
+                .then(() => {
+                    sinon.assert.calledWithExactly(res.status, 404);
+                    sinon.assert.calledWithExactly(res.send, myError.message);
+                });
+        });
+
+        it('should return 200 if the function succeeds', function(){
+            const values = { name: 'blá blá', age: 12, };
+            
+        
+            const msSpy = sandbox.spy(() => Promise.resolve(values));
+
+
+            return target(msSpy)(req, res)
+                .then(() => {
+                    sinon.assert.calledWithExactly(res.status, 200);
+                    sinon.assert.calledWithExactly(res.send, values);
+                });
+        });
+
+
     });
 
 });
