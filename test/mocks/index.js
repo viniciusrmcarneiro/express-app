@@ -9,6 +9,7 @@ const log = {
 
 const req = {
     body: {},
+    headers: {},
     log,
 };
 
