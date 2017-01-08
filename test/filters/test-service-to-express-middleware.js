@@ -30,7 +30,7 @@ describe('FILTERS', function(){
        
         it('should return 500 if the function throws an error', function(){
             const myError = new Error('some error');
-
+            sandbox.stub(console, 'log');
             const msSpy = sandbox.spy(() => Promise.reject(myError));
 
             return target(msSpy)(req, res)

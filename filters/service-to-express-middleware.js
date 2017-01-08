@@ -6,17 +6,20 @@ const middleware = (ms, req, res) => {
         log: logger,
     };
 
-    return new Promise( (resolve, rejec) => {
+    return new Promise( (resolve, reject) => {
         ms(params, context)
             .then(resolve)
-            .catch(rejec);
+            .catch(reject);
     })
     .then( data => {
         res.status(200);
         res.send(data);
     })
     .catch( ex => {
-        // console.log('\n',ex, '\n----------');
+        if (!ex.httpCode){
+            console.log('\n',ex, '\n----------');
+        }
+
         res.status(ex.httpCode || 500);
         res.send(ex.message);
     });

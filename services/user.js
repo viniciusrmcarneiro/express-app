@@ -2,6 +2,9 @@ const userRepo = require('../repo/user');
 const errors = require('../utils/errors');
 const promiseWrapper = require('../utils/promise-wrapper');
 
+const Ajv = require('ajv');
+const ajv = new Ajv();
+
 function all(){
     return userRepo.all();
 }
@@ -51,9 +54,25 @@ function update(params){
 
 }
 
-function create(params, context){
-    if (!params.username || !params.password){
-        throw new errors.InvalidCall();
+const _createSchema = {
+    "title": "create user",
+    "type": "object",
+    "properties": {
+        "username": {
+            "type": "string",
+            
+        },
+        "password": {
+            "type": "string",
+            "minLength": 6,
+        },
+    },
+    "required": ["username", "password"],
+};
+function create(params){
+    const valid = ajv.validate(_createSchema, params);
+    if (!valid) {
+        throw new errors.InvalidCall(ajv.errors);
     }
 
     const username = params.username;
@@ -74,6 +93,8 @@ function create(params, context){
 
         });
 }
+create.schema = _createSchema;
+
 
 module.exports = {
     all: promiseWrapper(all),

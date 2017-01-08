@@ -28,8 +28,8 @@ describe('SERVICES - USER', function(){
 
         it("should throw InvalidPassword if username and password are equal", function(){
             return target.create({
-                username: 'test',
-                password: 'test',
+                username: 'test-123',
+                password: 'test-123',
             })
             .should.be.rejectedWith(errors.InvalidPassword);
         });
